@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# GitHub push scripts (contain sensitive info)
+*push*.sh
+github-instructions.md

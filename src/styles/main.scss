@@ -1,0 +1,1091 @@
+// src/styles/main.scss
+@use "sass:color";
+
+// Variables
+$primary-color: #0df;
+$secondary-color: #f0f;
+$dark-bg: #121212;
+$light-bg: #f8f8f8;
+$accent-color: #0f0;
+$border-style: 2px solid $primary-color;
+$font-main: 'Courier New', monospace;
+$font-headers: 'Press Start 2P', cursive, sans-serif;
+
+// Reset & Base Styles
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+  font-family: $font-main;
+  background-color: $light-bg;
+  color: $dark-bg;
+  transition: background-color 0.3s, color 0.3s;
+  overflow-x: hidden;
+  
+  &.dark-mode {
+    background-color: $dark-bg;
+    color: $light-bg;
+    
+    .project-card, .logo-box, .video-frame {
+      background-color: color.adjust($dark-bg, $lightness: 10%);
+      border-color: $primary-color;
+    }
+    
+    .site-header {
+      background-color: rgba(color.adjust($dark-bg, $lightness: -3%), 0.95);
+    }
+    
+    .nav-link {
+      color: $light-bg;
+      
+      &:hover {
+        color: $primary-color;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+// Layout
+.portfolio-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+main {
+  margin: 2rem 0;
+}
+
+section {
+  padding: 3rem 0;
+  position: relative;
+
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, $primary-color, transparent);
+  }
+  
+  &:last-child::after {
+    display: none;
+  }
+}
+
+// Typography
+h1, h2, h3 {
+  font-family: $font-headers;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, $primary-color, $secondary-color);
+  }
+}
+
+// Header
+.site-header {
+  padding: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba($light-bg, 0.95);
+  backdrop-filter: blur(5px);
+  border-bottom: $border-style;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  
+  .pixel-text {
+    font-family: $font-headers;
+    color: $primary-color;
+    text-shadow: 2px 2px 0 $secondary-color;
+  }
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: $dark-bg;
+  font-weight: bold;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: $primary-color;
+    transition: width 0.3s;
+  }
+  
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+.theme-toggle {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(45deg, $primary-color, $secondary-color);
+  transition: transform 0.3s;
+  
+  &:hover {
+    transform: rotate(15deg);
+  }
+}
+
+// Hero Section
+.hero {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      linear-gradient(45deg, rgba($primary-color, 0.1) 25%, transparent 25%) -50px 0,
+      linear-gradient(45deg, transparent 75%, rgba($primary-color, 0.1) 75%) -50px 0,
+      linear-gradient(45deg, transparent 75%, rgba($primary-color, 0.1) 75%) 0px 50px,
+      linear-gradient(45deg, rgba($primary-color, 0.1) 25%, transparent 25%) 0px 50px;
+    background-size: 100px 100px;
+    animation: backgroundMove 30s linear infinite;
+  }
+}
+
+@keyframes backgroundMove {
+  0% {
+    background-position: 0 0, 0 0, 0 0, 0 0;
+  }
+  100% {
+    background-position: 500px 500px, 500px 500px, 500px 500px, 500px 500px;
+  }
+}
+
+.hero__content {
+  text-align: center;
+  z-index: 1;
+  padding: 2rem;
+  background-color: rgba($light-bg, 0.8);
+  border: $border-style;
+  border-radius: 8px;
+  max-width: 700px;
+  backdrop-filter: blur(5px);
+  
+  .dark-mode & {
+    background-color: rgba($dark-bg, 0.8);
+  }
+  
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+}
+
+// Glitch Text Effect
+.glitch-text {
+  position: relative;
+  color: $primary-color;
+  
+  &::before, &::after {
+    content: 'Front-End Developer';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  &::before {
+    color: $secondary-color;
+    z-index: -1;
+    animation: glitch 3s infinite alternate;
+  }
+  
+  &::after {
+    color: $accent-color;
+    z-index: -2;
+    animation: glitch 2s infinite alternate-reverse;
+  }
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-3px, 3px); }
+  40% { transform: translate(-3px, -3px); }
+  60% { transform: translate(3px, 3px); }
+  80% { transform: translate(3px, -3px); }
+}
+
+// Typewriter Effect
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid $primary-color;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0.15em;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: $primary-color }
+}
+
+@media (max-width: 768px) {
+  .typewriter {
+    max-width: 100%;
+    font-size: 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    animation: none; // Deaktivér animationen hvis nødvendigt
+  }
+}
+
+
+// About Section
+.about__content {
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  
+  p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+}
+
+// Logo Carousel
+#logo-carousel {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin: 2rem 0;
+}
+
+.logo-track {
+  display: flex;
+  gap: 2rem;
+  animation: logoScroll 30s linear infinite;
+  width: max-content;
+  padding: 1rem 0;
+}
+
+@keyframes logoScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.logo-item {
+  flex: 0 0 auto;
+  padding: 0 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.logo-box {
+  height: 80px;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 2px solid var(--logo-color, $primary-color);
+  border-radius: 8px;
+  font-weight: bold;
+  color: var(--logo-color, $primary-color);
+  transition: transform 0.3s, box-shadow 0.3s;
+  padding: 0.8rem 1.5rem;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    
+    .dark-mode & {
+      box-shadow: 0 10px 20px rgba(var(--logo-color, $primary-color), 0.2);
+    }
+  }
+  
+  span {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}
+
+// Optional: Pause animation on hover
+#logo-carousel:hover .logo-track {
+  animation-play-state: paused;
+}
+
+// Video Section
+.video-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.video-frame {
+  aspect-ratio: 16/9;
+  border: $border-style;
+  background-color: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    
+    .play-icon {
+      transform: scale(1.2);
+    }
+  }
+  
+  .play-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s;
+  }
+  
+  .placeholder-text {
+    font-size: 1.2rem;
+  }
+}
+
+.video-info {
+  h3 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  p {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+}
+
+.cta-button {
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(45deg, $primary-color, $secondary-color);
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: $font-main;
+  transition: transform 0.3s, box-shadow 0.3s;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Project Grid
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.project-card {
+  border: $border-style;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+  background-color: #fff;
+  
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  h3 {
+    margin-bottom: 1rem;
+    color: $primary-color;
+  }
+  
+  p {
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  
+  span {
+    padding: 0.3rem 0.8rem;
+    background-color: rgba($primary-color, 0.1);
+    border: 1px solid $primary-color;
+    border-radius: 20px;
+    font-size: 0.8rem;
+  }
+}
+
+// MM Logo Animation
+.mm-logo {
+  display: flex;
+  justify-content: center;
+  font-family: $font-headers;
+  font-size: 3rem;
+  margin: 2rem 0;
+  perspective: 500px;
+}
+
+.m {
+  display: inline-block;
+  color: $primary-color;
+  margin: 0 5px;
+  transition: transform 0.3s;
+  
+  &.m-right {
+    color: $secondary-color;
+  }
+}
+
+// Footer
+.site-footer {
+  border-top: $border-style;
+  padding: 2rem 0 1rem;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-section {
+  h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+  
+  p {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.contact-icon {
+  color: $primary-color;
+  margin-right: 0.5rem;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-link {
+  text-decoration: none;
+  color: $primary-color;
+  transition: color 0.3s;
+  
+  &:hover {
+    color: $secondary-color;
+  }
+
+
+
+}
+
+.heart {
+  color: red;
+  animation: heartbeat 1s infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.copyright {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .site-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  nav ul {
+    gap: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
+
+// Snake Game Easter Egg Styles (minimal setup)
+.snake-game {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  canvas {
+    border: 2px solid $primary-color;
+  }
+}
+
+
+// Backend Skills Section
+.backend-showcase {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    
+    @media (max-width: 768px) {
+      /* grid-template-columns: 1fr; */
+      display: none;
+    }
+  }
+  
+  .code-editor {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    background-color: #1e1e1e;
+    
+    .dark-mode & {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+  }
+  
+  .editor-header {
+    background-color: #2d2d2d;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #3d3d3d;
+  }
+  
+  .file-name {
+    color: #d4d4d4;
+    font-size: 0.9rem;
+  }
+  
+  .editor-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .editor-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    
+    &.red { background-color: #ff5f56; }
+    &.yellow { background-color: #ffbd2e; }
+    &.green { background-color: #27c93f; }
+  }
+  
+  .editor-content {
+    padding: 1rem;
+    max-height: 500px;
+    overflow-y: auto;
+    
+    pre {
+      margin: 0;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #d4d4d4;
+      
+      code {
+        display: block;
+        white-space: pre;
+      }
+    }
+  }
+  
+  .api-demo {
+    display: flex;
+    flex-direction: column;
+    
+    h3 {
+      margin-bottom: 1.5rem;
+      color: $primary-color;
+    }
+    
+    h4 {
+      margin: 1rem 0;
+      font-family: $font-headers;
+      font-size: 1rem;
+    }
+  }
+  
+  .endpoint-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .endpoint {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+    cursor: pointer;
+    
+    .dark-mode & {
+      background-color: #2d2d2d;
+    }
+    
+    &:hover, &.active {
+      transform: translateX(5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      
+      .dark-mode & {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+    }
+    
+    &.active {
+      border-left: 4px solid $primary-color;
+    }
+  }
+  
+  .method {
+    padding: 0.3rem 0.5rem;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin-right: 1rem;
+    min-width: 60px;
+    text-align: center;
+    
+    &.get {
+      background-color: #61affe;
+      color: #fff;
+    }
+    
+    &.post {
+      background-color: #49cc90;
+      color: #fff;
+    }
+    
+    &.put {
+      background-color: #fca130;
+      color: #fff;
+    }
+    
+    &.delete {
+      background-color: #f93e3e;
+      color: #fff;
+    }
+  }
+  
+  .url {
+    font-family: 'Courier New', monospace;
+    margin-right: 1rem;
+    flex: 1;
+  }
+  
+  .description {
+    color: #777;
+    font-size: 0.9rem;
+    flex: 2;
+    
+    .dark-mode & {
+      color: #aaa;
+    }
+  }
+  
+  .response-container {
+    background-color: #1e1e1e;
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;
+    
+    pre code {
+      font-family: 'Fira Code', monospace;
+      color: #9cdcfe;
+      font-size: 0.9rem;
+    }
+  }
+  
+  .backend-skills-info {
+    h3 {
+      color: $primary-color;
+      margin-bottom: 1.5rem;
+    }
+    
+    p {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+  }
+  
+  .skills-list {
+    list-style: none;
+    margin-bottom: 1.5rem;
+    
+    li {
+      margin-bottom: 1rem;
+      position: relative;
+      padding-left: 1.5rem;
+      
+      &::before {
+        content: '⚡';
+        position: absolute;
+        left: 0;
+        color: $accent-color;
+      }
+    }
+  }
+  
+  .skill-highlight {
+    color: $primary-color;
+    font-weight: bold;
+  }
+
+
+// Approach Section
+.approach-content {
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+  }
+  
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .principle {
+    padding: 1.5rem;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba($primary-color, 0.1), rgba($secondary-color, 0.1));
+    border-left: 4px solid $primary-color;
+    transition: transform 0.3s, box-shadow 0.3s;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      
+      .dark-mode & {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+    }
+    
+    h3 {
+      color: $primary-color;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+    
+    p {
+      font-size: 1rem;
+      margin-bottom: 0;
+    }
+  }
+
+  #snake-game-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background: #000;
+    z-index: 9999;
+    display: none;
+    border: 3px solid #fff;
+    canvas {
+      display: block;
+    }
+  }
+  
+  .snake-visible {
+    display: block;
+  }
+  
+  .snake-hidden {
+    display: none;
+  }
+  
+  .snake-wrapper {
+    position: relative;
+    width: 300px;
+    height: 300px;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background: #fff;
+    color: #000;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    transition: background 0.2s ease;
+    
+    &:hover {
+      background: #f44336;
+      color: white;
+    }
+  }
+  
+  // Back-to-top button
+.back-to-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: $primary-color;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 1000;
+  
+  &:hover {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
+  
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+// Collapsible section styles
+.collapsible-header {
+  cursor: pointer;
+  position: relative;
+  padding: 0.5rem 0;
+  
+  .caret {
+    margin-left: 0.5rem;
+    transition: transform 0.3s;
+  }
+  
+  &.active .caret {
+    transform: rotate(180deg);
+  }
+}
+
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+.project-card {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden; // vigtig for at holde effekterne inde i kortet
+
+  .comment {
+    margin-top: 1rem;
+    font-size: 12px;}
+  
+  &.clickable {
+    // Overlay til blur-effekt
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+      backdrop-filter: blur(0px);
+      transition: backdrop-filter 0.3s ease;
+      z-index: 1;
+    }
+
+    &:hover::before {
+      backdrop-filter: blur(5px); // hvor meget kortet skal udviskes
+    }
+
+    // Gradient fade around overlay-tekst
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        rgba($primary-color, 0.9) 0%,
+        rgba($primary-color, 0.6) 50%,
+        transparent 100%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 8px;
+      z-index: 2;
+    }
+
+    &:hover::after {
+      opacity: 1;
+    }
+  }
+
+  // Overlay-tekst som vises midt på kortet
+  .hover-overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 1rem 1.5rem;
+    background-color: rgba(0, 0, 0, 0.6); // solid baggrund
+    border-radius: 10px;
+  }
+
+  &:hover .hover-overlay-text {
+    opacity: 1;
+  }
+
+  .view-project-btn {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background-color: $primary-color;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 3;
+  }
+
+  &:hover .view-project-btn {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+

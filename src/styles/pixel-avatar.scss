@@ -1,0 +1,344 @@
+// Variables - Nordisk farvepalet med fokus på elegance og kontrast
+$primary-color: #00c0ff;  // Isblå for god kontrast
+$secondary-color: #e1f5fe; // Let blå, elegant
+$accent-color: #5ebddf;   // Mellemblå accent (sofistikeret)
+$light-bg: #f5f9fc;       // Lys baggrund for kontrast
+$light-text: #2c3e50;     // Mørkere tekst for bedre læsbarhed
+$border-size: 2px;
+$border-radius: 12px;
+$border-radius-sm: 8px;
+$body-font: 'Inter', 'Roboto', 'Segoe UI', sans-serif; // Moderne font
+
+// Import color module
+@use "sass:color";
+
+// Mixins
+@mixin elegant-shadow {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+@mixin soft-shadow {
+  box-shadow: 0 4px 16px rgba(0, 30, 60, 0.15);
+}
+
+@mixin pixel-border($color) {
+  border: $border-size solid $color;
+}
+
+// Keyframes
+@keyframes soft-appear {
+  0% {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes subtle-typing {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+// Base styles
+.pixel-avatar-popup {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 9999;
+  font-family: $body-font;
+  @include elegant-shadow;
+  
+  .pixel-popup-container {
+    width: 340px;
+    background-color: $light-bg;
+    color: $light-text;
+    @include pixel-border(rgba($primary-color, 0.6));
+    border-radius: $border-radius;
+    overflow: hidden;
+    animation: soft-appear 0.7s ease-out;
+    transition: all 0.3s ease;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      background: linear-gradient(135deg, $primary-color, $accent-color);
+      opacity: 0.15;
+      z-index: -1;
+      border-radius: calc($border-radius + 2px);
+    }
+  }
+}
+
+// Header styles
+.pixel-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: linear-gradient(90deg, $primary-color, $accent-color);
+  cursor: move;
+  
+  .pixel-popup-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  
+  .pixel-popup-close {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 14px;
+    border-radius: 50%;
+    transition: all 0.2s;
+    
+    &:hover {
+      transform: scale(1.1);
+      background-color: rgba(255,255,255,0.3);
+    }
+  }
+}
+
+// Messages area
+.pixel-popup-messages {
+  height: 260px;
+  overflow-y: auto;
+  padding: 16px;
+  background-color: color.adjust($light-bg, $lightness: -2%);
+  background-image: radial-gradient(rgba($primary-color, 0.04) 1px, transparent 1px);
+  background-size: 16px 16px;
+  scrollbar-width: thin;
+  scrollbar-color: $primary-color $light-bg;
+  
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: color.adjust($light-bg, $lightness: -2%);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: color.adjust($primary-color, $alpha: -0.5);
+    border-radius: 10px;
+    
+    &:hover {
+      background-color: $primary-color;
+    }
+  }
+  
+  display: flex;
+  flex-direction: column;
+  
+  .pixel-message {
+    margin-bottom: 16px;
+    max-width: 85%;
+    display: flex;
+    
+    &.avatar-message {
+      align-self: flex-start;
+    }
+    
+    &.user-message {
+      align-self: flex-end;
+    }
+    
+    .pixel-message-text {
+      padding: 12px 14px;
+      border-radius: $border-radius-sm;
+      font-size: 14px;
+      line-height: 1.5;
+      word-wrap: break-word;
+      box-shadow: 0 1px 3px rgba(0,0,0, 0.08);
+    }
+    
+    &.avatar-message .pixel-message-text {
+      background-color: color.adjust($light-bg, $lightness: -4%);
+      border-left: 2px solid $primary-color;
+      color: $light-text;
+      border-bottom-left-radius: 4px;
+      
+      &::after {
+        content: '▌';
+        color: $accent-color;
+        animation: cursor-blink 1s infinite;
+        font-size: 12px;
+        vertical-align: middle;
+        margin-left: 3px;
+        opacity: 0.8;
+      }
+    }
+    
+    &.user-message .pixel-message-text {
+      background-color: $primary-color;
+      border-bottom-right-radius: 4px;
+      color: #fff;
+      text-align: right;
+    }
+  }
+}
+
+// Typing indicator
+.pixel-typing-indicator {
+  display: flex;
+  padding: 10px 12px;
+  background-color: color.adjust($light-bg, $lightness: -4%);
+  border-left: 2px solid $primary-color;
+  border-radius: $border-radius-sm;
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+  max-width: 85%;
+  margin-bottom: 10px;
+  
+  .pixel-dot {
+    width: 6px;
+    height: 6px;
+    background-color: $accent-color;
+    margin-right: 4px;
+    border-radius: 50%;
+    animation: subtle-typing 1s infinite;
+    opacity: 0.8;
+    
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+      background-color: color.adjust($accent-color, $lightness: 10%);
+    }
+    
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+      margin-right: 0;
+      background-color: color.adjust($accent-color, $lightness: 20%);
+    }
+  }
+}
+
+// Input areas
+.pixel-name-container,
+.pixel-input-container {
+  display: flex;
+  padding: 14px;
+  background-color: color.adjust($light-bg, $lightness: -3%);
+  border-top: 1px solid rgba($primary-color, 0.15);
+}
+
+.pixel-input {
+  flex: 1;
+  padding: 12px 14px;
+  background-color: color.adjust($light-bg, $lightness: -1%);
+  border: 1px solid rgba($primary-color, 0.3);
+  border-radius: 20px;
+  color: $light-text;
+  font-family: $body-font;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+  
+  &:focus {
+    border-color: $primary-color;
+    background-color: #fff;
+    @include soft-shadow;
+  }
+  
+  &::placeholder {
+    color: rgba($light-text, 0.5);
+  }
+}
+
+.pixel-button {
+  padding: 10px 16px;
+  margin-left: 10px;
+  background: linear-gradient(135deg, $primary-color, $accent-color);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-family: $body-font;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 20px;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.4);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Quick questions
+.pixel-quick-questions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 14px;
+  background-color: color.adjust($light-bg, $lightness: -3%);
+  border-top: 1px solid rgba($primary-color, 0.15);
+  
+  .pixel-quick-btn {
+    padding: 10px;
+    background-color: rgba($primary-color, 0.1);
+    border: 1px solid rgba($primary-color, 0.25);
+    border-radius: 20px;
+    color: $light-text;
+    font-family: $body-font;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.25s;
+    
+    &:hover {
+      background-color: rgba($accent-color, 0.15);
+      border-color: $accent-color;
+      color: color.adjust($light-text, $lightness: -15%);
+    }
+    
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+}
+
+// Animation for cursor blinking
+@keyframes cursor-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+// Mobile responsiveness
+@media (max-width: 576px) {
+  .pixel-avatar-popup {
+    bottom: 15px;
+    right: 15px;
+    
+    .pixel-popup-container {
+      width: 300px;
+    }
+    
+    .pixel-popup-messages {
+      height: 220px;
+    }
+  }
+}

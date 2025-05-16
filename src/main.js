@@ -34,6 +34,11 @@ document.querySelector('#app').innerHTML = `
          <!-- Avatar section  ( pop-up)-->
          <div id="pixel-avatar-section"></div>  <!-- New avatar section -->
          
+         <!-- Floating AI Assistant Button -->
+         <button id="floating-ai-btn" class="floating-ai-assistant-btn">
+           <span class="ai-icon">💬</span>
+         </button>
+         
 <p>## Summary</p>
 <p>
 I'm a results-driven Front-End Developer with a passion for creating immersive digital experiences that combine aesthetic appeal with technical excellence. Specializing in modern JavaScript frameworks and responsive design, I bridge the gap between creative vision and technical implementation.With a background in project management, I bring structure and strategic thinking to development workflows—ensuring not just code quality, but also delivery excellence. 
@@ -200,26 +205,33 @@ Creating experiences that are not just functional but memorable. Whether optimiz
 `
 
 // Initialize all components
-initPixelAvatar()
 renderHeader()
 renderFooter()
 renderLogoCarousel()
 /* renderVideoSection() */
 renderAnimatedLogo()
 renderBackendSkills()
-initPixelAvatar()
+initPixelAvatar() // Initialize AI assistant - only call once
 renderBackToTop() 
 initCollapsibleSections() 
 initProjectCards()
 
+// Add floating AI button functionality
+document.getElementById('floating-ai-btn').addEventListener('click', () => {
+  const avatarSection = document.getElementById('pixel-avatar-section')
+  if (avatarSection) {
+    avatarSection.style.display = 'block'
+  }
+})
+
 // Easter egg: Snake game
-let snakeGame = false
+window.snakeGame = false
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && !snakeGame) {
+  if (e.key === 'Escape' && !window.snakeGame) {
     console.log('Snake game activated!')
+    window.snakeGame = true
     startSnakeGame()
-
   }
 })
 // Mobil trigger via klik 

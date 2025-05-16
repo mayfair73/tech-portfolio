@@ -66,6 +66,16 @@ export function renderPixelAvatar() {
   // Close button handler
   closeButton.addEventListener('click', () => {
     avatarSection.style.display = 'none'
+    // Clear chat history when closing
+    messagesContainer.innerHTML = `
+      <div class="pixel-message avatar-message">
+        <div class="pixel-message-text">Hello! I'm your AI assistant. I can tell you about my skills, projects, and experience. What would you like to know?</div>
+      </div>
+    `
+    // Reset name input if it was shown
+    nameContainer.style.display = 'block'
+    nameInput.value = ''
+    visitorName = ''
   })
   
   // Set name handler
@@ -221,37 +231,19 @@ function makeDraggable(handle, dragElement) {
   }
 }
 
-// Vis avatar ved scroll
-export function setupScrollTrigger() {
-  let hasScrolled = false
-  
-  // Check om user - scrolled (using localStorage)
-  if (localStorage.getItem('hasScrolled') === 'true') {
-    hasScrolled = true
-  }
-  
-  // Function - handle scroll event
-  function handleScroll() {
-    if (!hasScrolled) {
-      hasScrolled = true
-      localStorage.setItem('hasScrolled', 'true')
-      
-      const avatarSection = document.getElementById('pixel-avatar-section')
-      if (avatarSection) {
-        avatarSection.style.display = 'block'
-      }
-      
-      // Fjern scroll event listener once triggered
-      window.removeEventListener('scroll', handleScroll)
+// Show avatar immediately
+export function setupAvatarTrigger() {
+  // Show the avatar immediately without waiting for scroll
+  setTimeout(() => {
+    const avatarSection = document.getElementById('pixel-avatar-section')
+    if (avatarSection) {
+      avatarSection.style.display = 'block'
     }
-  }
-  
-  // Tilføj scroll event listener
-  window.addEventListener('scroll', handleScroll)
+  }, 2000) // Show after 2 seconds
 }
 
-// Initialize begge funktioner
+// Initialize functions
 export function initPixelAvatar() {
   renderPixelAvatar()
-  setupScrollTrigger()
+  setupAvatarTrigger()
 }

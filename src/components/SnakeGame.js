@@ -1,4 +1,3 @@
-
 export function startSnakeGame() {
   const container = document.getElementById('snake-game-container')
   container.classList.remove('snake-hidden')
@@ -24,41 +23,53 @@ export function startSnakeGame() {
   const tileCount = canvas.width / gridSize
   let snake = [{ x: 10, y: 10 }]
   let food = { x: 5, y: 5 }
-  let dx = 1
+  let dx = 0  // Start with no movement
   let dy = 0
   let gameLoop
+  let snakeGame = true
 
   function drawGame() {
+    // Clear canvas
     ctx.fillStyle = '#000'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
+    // Draw food
     ctx.fillStyle = 'red'
     ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2)
 
-    const head = { x: snake[0].x + dx, y: snake[0].y + dy }
+    // Only move if direction is set
+    if (dx !== 0 || dy !== 0) {
+      const head = { x: snake[0].x + dx, y: snake[0].y + dy }
 
-    if (
-      head.x < 0 || head.x >= tileCount ||
-      head.y < 0 || head.y >= tileCount ||
-      snake.some(segment => segment.x === head.x && segment.y === head.y)
-    ) {
-      clearInterval(gameLoop)
-      alert('Game Over!')
-      closeGame()
-      return
-    }
-
-    snake.unshift(head)
-
-    if (head.x === food.x && head.y === food.y) {
-      food = {
-        x: Math.floor(Math.random() * tileCount),
-        y: Math.floor(Math.random() * tileCount)
+      // Check for collisions
+      if (
+        head.x < 0 || head.x >= tileCount ||
+        head.y < 0 || head.y >= tileCount ||
+        snake.some(segment => segment.x === head.x && segment.y === head.y)
+      ) {
+        clearInterval(gameLoop)
+        alert('Game Over! Page will refresh for a new game.')
+        closeGame()
+        // Refresh the page after a short delay
+        setTimeout(() => {
+          window.location.reload()
+        }, 500)
+        return
       }
-    } else {
-      snake.pop()
+
+      snake.unshift(head)
+
+      if (head.x === food.x && head.y === food.y) {
+        food = {
+          x: Math.floor(Math.random() * tileCount),
+          y: Math.floor(Math.random() * tileCount)
+        }
+      } else {
+        snake.pop()
+      }
     }
 
+    // Draw snake
     ctx.fillStyle = 'lime'
     for (let part of snake) {
       ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2)
@@ -66,35 +77,49 @@ export function startSnakeGame() {
   }
 
   function closeGame() {
-    snakeGame = false
+    window.snakeGame = false
     clearInterval(gameLoop)
     container.classList.remove('snake-game')
     container.classList.add('snake-hidden')
     container.innerHTML = ''
   }
 
-  // Tastaturkontrol
-  document.addEventListener('keydown', handleKeyDown)
+  // Keyboard control
   function handleKeyDown(e) {
     switch (e.key) {
-      case 'ArrowUp': if (dy === 0) { dx = 0; dy = -1 }; break
-      case 'ArrowDown': if (dy === 0) { dx = 0; dy = 1 }; break
-      case 'ArrowLeft': if (dx === 0) { dx = -1; dy = 0 }; break
-      case 'ArrowRight': if (dx === 0) { dx = 1; dy = 0 }; break
+      case 'ArrowUp': if (dy !== 1) { dx = 0; dy = -1 }; break
+      case 'ArrowDown': if (dy !== -1) { dx = 0; dy = 1 }; break
+      case 'ArrowLeft': if (dx !== 1) { dx = -1; dy = 0 }; break
+      case 'ArrowRight': if (dx !== -1) { dx = 1; dy = 0 }; break
+      case 'Escape': 
+        document.removeEventListener('keydown', handleKeyDown)
+        closeGame()
+        break
     }
   }
+  
+  document.addEventListener('keydown', handleKeyDown)
 
-  // Mobilkontroller
-  container.querySelector('.up').addEventListener('click', () => { if (dy === 0) { dx = 0; dy = -1 } })
-  container.querySelector('.down').addEventListener('click', () => { if (dy === 0) { dx = 0; dy = 1 } })
-  container.querySelector('.left').addEventListener('click', () => { if (dx === 0) { dx = -1; dy = 0 } })
-  container.querySelector('.right').addEventListener('click', () => { if (dx === 0) { dx = 1; dy = 0 } })
+  // Mobile controls
+  container.querySelector('.up').addEventListener('click', () => { if (dy !== 1) { dx = 0; dy = -1 } })
+  container.querySelector('.down').addEventListener('click', () => { if (dy !== -1) { dx = 0; dy = 1 } })
+  container.querySelector('.left').addEventListener('click', () => { if (dx !== 1) { dx = -1; dy = 0 } })
+  container.querySelector('.right').addEventListener('click', () => { if (dx !== -1) { dx = 1; dy = 0 } })
 
   document.getElementById('close-snake-game').addEventListener('click', () => {
     document.removeEventListener('keydown', handleKeyDown)
     closeGame()
   })
 
+  // Start game
   gameLoop = setInterval(drawGame, 100)
-  snakeGame = true
+  
+  // Draw initial state
+  drawGame()
+  
+  // Add starting instruction
+  ctx.fillStyle = 'white'
+  ctx.font = '12px Arial'
+  ctx.textAlign = 'center'
+  ctx.fillText('Use arrow keys to start moving', canvas.width / 2, canvas.height / 2 + 30)
 }

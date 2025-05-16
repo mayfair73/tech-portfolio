@@ -23,6 +23,9 @@ export function renderFooter() {
           <div id="contact" class="footer-section">
             <p class="footer-note">Built with <span class="heart">♥</span> and JavaScript</p>
             <p class="footer-note">Press ESC for a surprise</p>
+            <p class="footer-note">
+              <button id="open-ai-assistant" class="ai-assistant-btn">Chat with AI Assistant</button>
+            </p>
           </div>
         </div>
         
@@ -31,4 +34,12 @@ export function renderFooter() {
         </div>
       </footer>
     `
+    
+    // Add event listener to the AI Assistant button
+    document.getElementById('open-ai-assistant').addEventListener('click', () => {
+      const avatarSection = document.getElementById('pixel-avatar-section')
+      if (avatarSection) {
+        avatarSection.style.display = 'block'
+      }
+    })
   }
